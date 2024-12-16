@@ -1,13 +1,32 @@
 <template>
     <div class="search-box">
-        <input />
-        <input type="date" />
-        <input type="date" />
-        <button>검색</button>
+        <input v-model.lazy="keyword" />
+        <input type="date" v-model="searchStartDate"/>
+        <input type="date" v-model="searchEndDate"/>
+        <button v-on:click="handlerSerach">검색</button>
         <button>신규등록</button>
     </div>
 </template>
-<script></script>
+
+<script setup>
+import router from '@/router'
+
+const keyword = ref('');
+const searchStartDate = ref('');
+const searchEndDate = ref('');
+
+const handlerSerach = () => {
+    const query = [];
+    !keyword.value || query.push(`searchTitle=${keyword.value}`);
+    !searchStartDate.value || query.push(`searchTitle=${searchStartDate.value}`);
+    !searchEndDate.value || query.push(`searchTitle=${searchEndDate.value}`);
+    const queryString = query.length > 0 ? `?${query.join('&')}` : '';
+
+    router.push(queryString);
+};
+
+watchEffect(() => window.location.search && router.push()); // URL이 변경되면 리셋
+</script>
 
 <style lang="scss" scoped>
 .search-box {

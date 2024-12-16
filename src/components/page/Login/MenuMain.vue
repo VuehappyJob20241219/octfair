@@ -1,11 +1,13 @@
 <template>
     <div class="container">
-      <h1>오늘의 메뉴판</h1>
-      <p v-if="imageUrl === 'loading'" class="loading-message">이미지 로딩중 ...</p>
-      <p v-else-if="imageUrl === 'error'" class="error-message">이미지 로딩에 실패했습니다.</p>
-      <div v-else class="image-wrapper">
-        <img :src="imageUrl" alt="Scraped" class="styled-image" />
-      </div>
+        <h1>오늘의 메뉴</h1>
+        <div v-if="imageUrl === 'loading'" class="loading-message">
+            <img src="../../../assets/loading_circle.gif" alt="오늘의 메뉴" class="styled-image" />
+        </div>
+        <p v-else-if="imageUrl === 'error'" class="error-message">이미지 로딩에 실패했습니다.</p>
+        <div v-else class="image-wrapper">
+            <img :src="imageUrl" alt="오늘의 메뉴" class="styled-image" />
+        </div>
     </div>
 </template>
 
@@ -18,13 +20,11 @@ export default {
     setup() {
         const imageUrl = ref('loading');
 
-        onMounted(() => {
-        axios
-            .get('/dashboard/menu.do')
-            .then((response) => { imageUrl.value = response.data.imageUrl; })
-            .catch(() => { imageUrl.value = 'error'; });
+        onMounted(async () => {
+            await axios.get('/dashboard/menu.do')
+                .then((response) => { imageUrl.value = response.data.imageUrl; })
+                .catch(() => { imageUrl.value = 'error'; });alert(imageUrl.value);
         });
-        console.log(imageUrl)
 
         return {
             imageUrl,
