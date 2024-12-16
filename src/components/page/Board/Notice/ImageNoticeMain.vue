@@ -51,14 +51,14 @@ const cPage = ref(1);
 watch((route), () => searchList());
 
 const searchList = async () => {
-    const param = new URLSearchParams({
+    const param = {
         searchTitle: route.query.searchTitle || '',
         searchStDate: route.query.searchStDate || '',
         searchEdDate: route.query.searchEdDate || '',
-        currentPage: cPage.value,
-        pageSize: itemPerPage.value,
-    });
-    await axios.post('/api/board/noticeListJson.do', param)
+        currentPage: cPage.value.toString(),
+        pageSize: itemPerPage.value.toString(),
+    };
+    await axios.post('/api/board/noticeListBodyThumb.do', param)
         .then((res) => { noticeList.value = res.data; });
 };
 
