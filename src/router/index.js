@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/Login/Login.vue';
 import DashBoard from '../views/DashBoard/DashBoard.vue';
+import MenuMain from '../components/page/Login/MenuMain.vue'
 
 const routes = [
     {
@@ -12,6 +13,14 @@ const routes = [
         path: '/vue',
         name: 'vue',
         component: DashBoard,
+
+        children : [
+            {
+              path: '',
+              name: 'menu',
+              component:  MenuMain,
+            },
+        ]
     },
 ];
 
