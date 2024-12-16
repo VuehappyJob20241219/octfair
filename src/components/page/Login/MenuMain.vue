@@ -2,36 +2,38 @@
     <div class="container">
         <h1>오늘의 메뉴</h1>
         <div v-if="imageUrl === 'loading'" class="loading-message">
-            <img src="../../../assets/loading_circle.gif" alt="오늘의 메뉴" class="styled-image" />
+            <img src="../../../assets/loading_circle.gif" alt="로딩 이미지" class="styled-image" />
         </div>
-        <p v-else-if="imageUrl === 'error'" class="error-message">이미지 로딩에 실패했습니다.</p>
+        <div v-else-if="imageUrl === 'error'" class="error-message">이미지 로딩에 실패했습니다.>
+            <img src="../../../assets/noImage.jpg" alt="빈 이미지" class="styled-image" />
+        </div>
         <div v-else class="image-wrapper">
             <img :src="imageUrl" alt="오늘의 메뉴" class="styled-image" />
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
-export default {
-    name: 'MenuMain',
-    setup() {
-        const imageUrl = ref('loading');
+const imageUrl = ref('loading');
 
-        onMounted(async () => {
-            await axios.get('/dashboard/menu.do')
-                .then((response) => { imageUrl.value = response.data.imageUrl; })
-                .catch(() => { imageUrl.value = 'error'; });alert(imageUrl.value);
-        });
+onMounted(async () => {
+    const baseURL = '/api';
+    const apiURL = '/dashboard/menu.do';
+    const menuURL = 'https://pf.kakao.com/_QLvRn'; // 좌측은 이츠푸드, 우측은 벽산더이룸푸드: "https://pf.kakao.com/_xdLzxgG"
+    const queryParam = `?menuURL=${menuURL}`;
 
-        return {
-            imageUrl,
-        };
-    },
-};
+    try {
+        const response = await axios.get(`${baseURL}${apiURL}${queryParam}`);
+        imageUrl.value = `${baseURL}${response.data.imageUrl}`;
+    } catch (error) {
+        imageUrl.value = 'error';
+    }
+});
 </script>
+
 
 <style scoped>
 .container {

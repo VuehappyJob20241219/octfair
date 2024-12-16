@@ -18,8 +18,8 @@ const searchEndDate = ref('');
 const handlerSerach = () => {
     const query = [];
     !keyword.value || query.push(`searchTitle=${keyword.value}`);
-    !searchStartDate.value || query.push(`searchTitle=${searchStartDate.value}`);
-    !searchEndDate.value || query.push(`searchTitle=${searchEndDate.value}`);
+    !searchStartDate.value || query.push(`searchTitle=${searchStDate.value}`);
+    !searchEndDate.value || query.push(`searchTitle=${searchEdDate.value}`);
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
 
     router.push(queryString);

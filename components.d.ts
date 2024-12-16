@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     ContextBox: typeof import('./src/components/common/ContextBox.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    ImageNoticeMain: typeof import('./src/components/page/Login/ImageNoticeMain.vue')['default']
     LeftManuBar: typeof import('./src/components/layout/LeftManuBar.vue')['default']
     LoginMain: typeof import('./src/components/page/Login/LoginMain.vue')['default']
     MenuMain: typeof import('./src/components/page/Login/MenuMain.vue')['default']
