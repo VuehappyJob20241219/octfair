@@ -1,6 +1,5 @@
 <template>
 <div>
-    <!-- 이미지 카드 갤러리 -->
     <div class="gallery-container" v-if="noticeList?.noticeCnt > 0">
         <div class="card"
             v-for="notice in noticeList.notice"
@@ -9,7 +8,7 @@
         >
             <div class="image-wrapper">
                 <img v-if="notice.logicalPath" :src="`/api${notice.logicalPath}`" />
-                <img v-if="!notice.logicalPath" src="../../../../assets/logo.png" />
+                <img v-else="!notice.logicalPath" src="../../../../assets/logo.png" />
             </div>
             <div class="title">{{ notice.title }}</div>
         </div>
@@ -17,13 +16,13 @@
 
     <!-- 페이지네이션 -->
     <div class="page-navigate-styled">
-    <Pagination 
-        :totalItems="noticeList?.noticeCnt || 0"
-        :items-per-page="itemPerPage"
-        :max-pages-shown="5"
-        :onClick="searchList"
-        v-model="cPage"
-    />
+        <Pagination 
+            :totalItems="noticeList?.noticeCnt || 0"
+            :items-per-page="itemPerPage"
+            :max-pages-shown="5"
+            :onClick="searchList"
+            v-model="cPage"
+        />
     </div>
 
     <!-- 모달 -->

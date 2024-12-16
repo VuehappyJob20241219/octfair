@@ -37,51 +37,51 @@ onMounted(async () => {
 
 <style scoped>
 .container {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-text-align: center;
-margin: 20px;
-font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 20px;
+    font-family: 'Arial', sans-serif;
 }
 
 .container h1 {
-font-size: 2rem;
-color: #333;
+    font-size: 2rem;
+    color: #333;
 }
 
 .image-wrapper {
-display: flex;
-justify-content: center;
-align-items: center;
-padding: 20px;
-background-color: #f4f0e1;
-border: 5px solid gold;
-border-radius: 15px;
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-width: 60%;
-max-width: 600px;
-margin-top: 20px;
-position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f4f0e1;
+    border: 5px solid gold;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    max-width: 600px;
+    margin-top: 20px;
+    position: relative;
 }
 
 .styled-image {
-max-width: 100%;
-height: auto;
-border-radius: 10px;
-border: 3px solid #d4af37;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-object-fit: cover;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 3px solid #d4af37;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
 }
 
 .loading-message {
-font-size: 1.2rem;
-color: #555;
+    font-size: 1.2rem;
+    color: #555;
 }
 
 .error-message {
-font-size: 1.2rem;
-color: red;
+    font-size: 1.2rem;
+    color: red;
 }
 </style>
