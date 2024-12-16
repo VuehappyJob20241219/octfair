@@ -9,7 +9,7 @@
         >
             <div class="image-wrapper">
                 <img v-if="notice.logicalPath" :src="`/api${notice.logicalPath}`" />
-                <img v-if="!notice.logicalPath" src="../../../assets/logo.png" />
+                <img v-if="!notice.logicalPath" src="../../../../assets/logo.png" />
             </div>
             <div class="title">{{ notice.title }}</div>
         </div>
@@ -19,7 +19,7 @@
     <div class="page-navigate-styled">
     <Pagination 
         :totalItems="noticeList?.noticeCnt || 0"
-        :items-per-page="5"
+        :items-per-page="itemPerPage"
         :max-pages-shown="5"
         :onClick="searchList"
         v-model="cPage"
@@ -41,10 +41,11 @@
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
-import Pagination from '../../common/Pagination.vue';
+import Pagination from '../../../common/Pagination.vue';
 
 const route = useRoute();
 const noticeList = ref();
+const itemPerPage = ref(12);
 const cPage = ref(1);
 
 watch((route), () => searchList());
@@ -55,7 +56,7 @@ const searchList = async () => {
         searchStDate: route.query.searchStDate || '',
         searchEdDate: route.query.searchEdDate || '',
         currentPage: cPage.value,
-        pageSize: 12,
+        pageSize: itemPerPage.value,
     });
     await axios.post('/api/board/noticeListJson.do', param)
         .then((res) => { noticeList.value = res.data; });

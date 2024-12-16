@@ -1,8 +1,8 @@
 <template>
     <NoticeSearch />
     <ContextBox>공지사항</ContextBox>
-    <!-- <NoticeMain /> -->
     <ImageNoticeMain />
+    <!-- <NoticeMain /> -->
 </template>
 
 <script setup>
