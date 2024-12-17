@@ -7,18 +7,23 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddOn: typeof import('./src/components/layout/AddOn.vue')['default']
     ContextBox: typeof import('./src/components/common/ContextBox.vue')['default']
+    FoodMenu: typeof import('./src/components/layout/AddOn/FoodMenu.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     ImageNoticeMain: typeof import('./src/components/page/Board/Notice/ImageNoticeMain.vue')['default']
+    JukeBox: typeof import('./src/components/layout/AddOn/JukeBox.vue')['default']
     LeftManuBar: typeof import('./src/components/layout/LeftManuBar.vue')['default']
     LoginMain: typeof import('./src/components/page/Login/LoginMain.vue')['default']
-    MenuMain: typeof import('./src/components/page/Login/MenuMain.vue')['default']
+    MenuMain: typeof import('./src/components/layout/AddOn/MenuMain.vue')['default']
+    MusicBox: typeof import('./src/components/layout/AddOn/MusicBox.vue')['default']
     NoticeMain: typeof import('./src/components/page/Board/Notice/NoticeMain.vue')['default']
     NoticeModal: typeof import('./src/components/page/Board/Notice/NoticeModal.vue')['default']
     NoticeSearch: typeof import('./src/components/page/Board/Notice/NoticeSearch.vue')['default']
     Pagination: typeof import('./src/components/common/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SnowMain: typeof import('./src/components/page/Login/SnowMain.vue')['default']
+    SnowMain: typeof import('./src/components/layout/AddOn/SnowMain.vue')['default']
+    SnowSkin: typeof import('./src/components/layout/AddOn/SnowSkin.vue')['default']
   }
 }
