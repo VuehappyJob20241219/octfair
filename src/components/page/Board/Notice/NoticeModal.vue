@@ -48,7 +48,12 @@ const handlerGetModalDetail = () => {
             noticeDetail.value.context = res.data.detail.content; // 변수명 오타 차이
 
             if (['jpg', 'gif', 'png', 'webp'].includes(noticeDetail.value.fileExt)) {
-                handlerGetImage(); // imageUrl.value = '/api'+noticeDetail.value.logicalPath;
+                handlerGetImage();
+                // 1. 위와 같은 Blob방식URL을 줄 시 사용자의 다운로드 의사와 상관없이 사용자의 브라우저 캐시에 이미 저장되며 
+                // 사용자가 조회/다운로드 원할 시 브라우저 캐시에서 받아오게 됨
+                // 2. 아래와 같은 방식으로 URL을 줄 시 physicalPath라면 운영서버에 직접접근이 가능해져버리고 
+                // logicalPath라면 파일서버에 직접접근이 가능해져버림
+                // imageUrl.value = '/api'+noticeDetail.value.logicalPath;
             }
         }
     );
