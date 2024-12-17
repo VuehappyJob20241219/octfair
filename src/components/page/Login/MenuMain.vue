@@ -1,5 +1,13 @@
 <template>
     <div class="container">
+        <iframe
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+            width="560" 
+            height="315" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen
+        >
+        </iframe>
         <h1>오늘의 메뉴</h1>
         <div v-if="imageUrl === 'loading'" class="loading-message">
             <img src="../../../assets/loading_circle.gif" alt="로딩 이미지" class="styled-image" />

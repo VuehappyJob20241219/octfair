@@ -1,14 +1,15 @@
 <template>
 <div>
+    <!-- 이미지뷰 -->
     <div class="gallery-container" v-if="noticeList?.noticeCnt > 0">
         <div class="card"
             v-for="notice in noticeList.notice"
             :key="notice.noticeIdx"
-            @click="handlerModal(notice.noticeIdx)"
+            v-on:click="handlerModal(notice.noticeIdx)"
         >
             <div class="image-wrapper">
                 <img v-if="notice.logicalPath" :src="`/api${notice.logicalPath}`" />
-                <img v-else="!notice.logicalPath" src="../../../../assets/logo.png" />
+                <img v-else src="../../../../assets/logo.png" />
             </div>
             <div class="title">{{ notice.title }}</div>
         </div>
@@ -26,30 +27,29 @@
     </div>
 
     <!-- 모달 -->
-    <!-- <Portal v-if="modal">
-    <NoticeModal
-        :notice-seq="index"
-        @close="setModal(false)"
-        @success="onSuccess"
+    <NoticeModal v-if="modalStore.modalState"
+        :idx="noticeIdx"
+        v-on:postSuccess="searchList"
+        @modalClose="noticeIdx=0"
     />
-    </Portal> -->
 </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { onMounted } from 'vue';
 import axios from 'axios';
 import Pagination from '../../../common/Pagination.vue';
+import { useModalStore } from '@/stores/modalState';
 
 const route = useRoute();
 const noticeList = ref();
 const itemPerPage = ref(12);
 const cPage = ref(1);
+const noticeIdx = ref(0);
+const modalStore = useModalStore();
 
-watch((route), () => searchList());
-
-const searchList = async () => {
+const searchList = () => {
     const param = {
         searchTitle: route.query.searchTitle || '',
         searchStDate: route.query.searchStDate || '',
@@ -57,13 +57,17 @@ const searchList = async () => {
         currentPage: cPage.value.toString(),
         pageSize: itemPerPage.value.toString(),
     };
-    await axios.post('/api/board/noticeListBodyThumb.do', param)
+    axios.post('/api/board/noticeListBodyThumb.do', param)
         .then((res) => { noticeList.value = res.data; });
 };
 
-onMounted(() => {
-    searchList();
-});
+const handlerModal = (idx) => {
+    modalStore.setModalState();
+    noticeIdx.value = idx;
+}
+
+onMounted(() => { searchList(); });
+watch((route), () => searchList());
 </script>
 
 <style lang="scss" scoped>

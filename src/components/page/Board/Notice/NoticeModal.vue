@@ -2,26 +2,162 @@
     <teleport to="body">
         <div class="backdrop">
             <div class="container">
-                <label> 제목 :<input type="text" /> </label>
-                <label>
-                    내용 :
-                    <input type="text" />
-                </label>
-                파일 :<input type="file" style="display: none" id="fileInput" />
+                <label> 제목 :<input type="text" v-model="noticeDetail.title"/> </label>
+                <label> 내용 :<input type="text" v-model="noticeDetail.context"/> </label> 
+                <label> 파일 :<input type="file" 
+                                    style="display: none" id="fileInput" 
+                                    @change="handlerSelectFile"/> </label> 
                 <label class="img-label" htmlFor="fileInput"> 파일 첨부하기 </label>
-                <div>
-                    <label>파일명</label>
+                <div @click="handlerDownloadFile">
+                    <div v-if="imageUrl">
+                        <label> 미리보기 : </label>
+                        <img :src="imageUrl" />
+                    </div>
+                    <div v-else>
+                        <label> 파일명 :</label>
+                    </div>
                 </div>
                 <div class="button-box">
-                    <button>삭제</button>
-                    <button>나가기</button>
+                    <button v-on:click="noticeDetail.noticeIdx ? handlerUpdateBtn() : handlerSaveBtn()">{{noticeDetail.noticeIdx ? '수정' : '저장'}}</button>
+                    <button v-if="props.idx" v-on:click="handlerDeleteBtn">삭제</button>
+                    <button v-on:click="modalStore.setModalState()">나가기</button>
                 </div>
             </div>
         </div>
     </teleport>
 </template>
 
-<script setup></script>
+<script setup>
+import { onMounted, onUnmounted } from 'vue';
+import { useModalStore } from '@/stores/modalState';
+import { useUserInfo } from '@/stores/userInfo';
+import axios from 'axios';
+
+const emits = defineEmits(['postSuccess', 'modalClose']);
+const props = defineProps(['idx']);
+const modalStore = useModalStore();
+const userInfo = useUserInfo();
+const noticeDetail = ref({});
+const imageUrl = ref('');
+const fileData = ref('');
+
+const handlerGetModalDetail = () => {
+    axios.post('/api/board/noticeDetailBody.do', {noticeSeq : props.idx})
+        .then((res) => {
+            noticeDetail.value = res.data.detail;
+            noticeDetail.value.context = res.data.detail.content; // 변수명 오타 차이
+
+            if (['jpg', 'gif', 'png', 'webp'].includes(noticeDetail.value.fileExt)) {
+                handlerGetImage(); // imageUrl.value = '/api'+noticeDetail.value.logicalPath;
+            }
+        }
+    );
+};
+
+const handlerSaveBtn = () => {
+    const textData = {
+        ...noticeDetail.value, // title, context
+        loginId: userInfo.user.loginId,
+    };
+    const formData = new FormData();
+    if(fileData.value)
+        formData.append('file', fileData.value);
+    formData.append('text', new Blob([JSON.stringify(textData)], {type:'application/json'}));
+    console.log(formData);
+    axios.post('/api/board/noticeSaveFileForm.do', formData)
+        .then((res) => {
+            if(res.data.result.toUpperCase() === 'SUCCESS') {
+                modalStore.setModalState();
+                emits('postSuccess');
+            }
+        }
+    );
+};
+
+const handlerUpdateBtn = () => {
+    const textData = {
+        ...noticeDetail.value, // title, context
+        loginId: userInfo.user.loginId,
+        noticeSeq: noticeDetail.value.noticeIdx,
+    };
+    const formData = new FormData();
+    if(fileData.value)
+        formData.append('file', fileData.value);
+    formData.append('text', new Blob([JSON.stringify(textData)], {type:'application/json'}));
+    console.log(formData);
+    axios.post('/api/board/noticeUpdateFileForm.do', formData)
+        .then((res) => {
+            if(res.data.result.toUpperCase() === 'SUCCESS') {
+                modalStore.setModalState();
+                emits('postSuccess');
+            }
+        }
+    );
+};
+
+const handlerDeleteBtn = () => {
+    axios.post('/api/board/noticeDeleteBody.do', {noticeSeq : props.idx})
+        .then((res) => {
+            modalStore.setModalState();
+            emits('postSuccess');
+        }
+    );
+};
+
+const handlerSelectFile = (e) => {
+    const fileInfo = e.target.files;
+    const fileInfoSplit = fileInfo[0].name.split('.');
+    const fileExtension = fileInfoSplit[1].toLowerCase();
+
+    if (['jpg', 'gif', 'png', 'webp'].includes(fileExtension))
+        imageUrl.value = URL.createObjectURL(fileInfo[0]);
+    fileData.value = fileInfo[0];
+};
+
+const handlerGetImage = () => {
+    let param = new URLSearchParams();
+    param.append('noticeSeq', props.idx);
+    const postAction = {
+        url: '/api/board/noticeDownload.do',
+        method: 'POST',
+        data: param,
+        responseType: 'blob',
+    };
+
+    axios(postAction)
+        .then((res) => {
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            imageUrl.value = url;
+        }
+    );
+};
+
+const handlerDownloadFile = () => {
+    let param = new URLSearchParams();
+    param.append('noticeSeq', props.idx);
+    const postAction = {
+        url: '/api/board/noticeDownload.do',
+        method: 'POST',
+        data: param,
+        responseType: 'blob',
+    };
+
+    axios(postAction)
+        .then((res) => {
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', noticeDetail.value.fileName);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+    );
+};
+
+onMounted(() => { props.idx && handlerGetModalDetail(); });
+onUnmounted(() => { emits('modalClose'); });
+</script>
 
 <style lang="scss" scoped>
 .backdrop {
@@ -29,7 +165,7 @@
     left: 0%;
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: fixed; // modal을 부모범위가 아니라 전체창범위에 소환하게 해주는 코드
     display: flex;
     flex-flow: row wrep;
     justify-content: center;

@@ -4,22 +4,24 @@
         <input type="date" v-model="searchStartDate"/>
         <input type="date" v-model="searchEndDate"/>
         <button v-on:click="handlerSerach">검색</button>
-        <button>신규등록</button>
+        <button v-on:click="modalStore.setModalState()">신규등록</button>
     </div>
 </template>
 
 <script setup>
 import router from '@/router'
+import { useModalStore } from '@/stores/modalState';
 
 const keyword = ref('');
 const searchStartDate = ref('');
 const searchEndDate = ref('');
+const modalStore = useModalStore();
 
 const handlerSerach = () => {
     const query = [];
     !keyword.value || query.push(`searchTitle=${keyword.value}`);
-    !searchStartDate.value || query.push(`searchTitle=${searchStDate.value}`);
-    !searchEndDate.value || query.push(`searchTitle=${searchEdDate.value}`);
+    !searchStartDate.value || query.push(`searchStDate=${searchStartDate.value}`);
+    !searchEndDate.value || query.push(`searchEdDate=${searchEndDate.value}`);
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
 
     router.push(queryString);

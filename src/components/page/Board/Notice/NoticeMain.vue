@@ -1,4 +1,5 @@
 <template>
+    <!-- 테이블블뷰 -->
     <div class="divNoticeList">
         현재 페이지: {{ cPage }} 총 개수: {{ noticeList?.noticeCnt }}
         <table>
@@ -36,6 +37,8 @@
                 </template>
             </tbody>
         </table>
+
+        <!-- 페이지네이션 -->
         <Pagination 
             :totalItems="noticeList?.noticeCnt || 0"
             :items-per-page="5"
@@ -43,36 +46,49 @@
             :onClick="searchList"
             v-model="cPage"
         />
+
+        <!-- 모달 -->
+        <NoticeModal v-if="modalStore.modalState"
+            :idx="noticeIdx"
+            @postSuccess="searchList"
+            @modalClose="noticeIdx=0"
+        />
     </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { onMounted } from 'vue';
 import axios from 'axios';
 import Pagination from '../../../common/Pagination.vue';
+import { useModalStore } from '@/stores/modalState';
 
 const route = useRoute();
 const noticeList = ref();
+const itemPerPage = ref(12);
 const cPage = ref(1);
+const noticeIdx = ref(0);
+const modalStore = useModalStore();
 
-watch((route), () => searchList());
-
-const searchList = async () => {
-    const param = new URLSearchParams({
+const searchList = () => {
+    const param = {
         searchTitle: route.query.searchTitle || '',
         searchStDate: route.query.searchStDate || '',
         searchEdDate: route.query.searchEdDate || '',
-        currentPage: cPage.value,
-        pageSize: 5,
-    });
-    await axios.post('/api/board/noticeListJson.do', param)
+        currentPage: cPage.value.toString(),
+        pageSize: itemPerPage.value.toString(),
+    };
+    axios.post('/api/board/noticeListBodyThumb.do', param)
         .then((res) => { noticeList.value = res.data; });
 };
 
-onMounted(() => {
-    searchList();
-});
+const handlerModal = (idx) => {
+    modalStore.setModalState();
+    noticeIdx.value = idx;
+}
+
+onMounted(() => { searchList(); });
+watch((route), () => searchList());
 </script>
 
 <style lang="scss" scoped>
