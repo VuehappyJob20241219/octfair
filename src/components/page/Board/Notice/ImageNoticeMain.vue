@@ -5,7 +5,7 @@
         <div class="card"
             v-for="notice in noticeList.notice"
             :key="notice.noticeIdx"
-            v-on:click="handlerModal(notice.noticeIdx)"
+            v-on:click="handlerGetModal(notice.noticeIdx)"
         >
             <div class="image-wrapper">
                 <img v-if="notice.logicalPath" :src="`/api${notice.logicalPath}`" />
@@ -61,7 +61,7 @@ const searchList = () => {
         .then((res) => { noticeList.value = res.data; });
 };
 
-const handlerModal = (idx) => {
+const handlerGetModal = (idx) => {
     modalStore.setModalState();
     noticeIdx.value = idx;
 }

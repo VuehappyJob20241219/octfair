@@ -40,7 +40,7 @@
         <!-- 페이지네이션 -->
         <Pagination 
             :totalItems="noticeList?.noticeCnt || 0"
-            :items-per-page="5"
+            :items-per-page="itemPerPage"
             :max-pages-shown="5"
             :onClick="searchList"
             v-model="cPage"
@@ -77,7 +77,7 @@ const searchList = () => {
         currentPage: cPage.value.toString(),
         pageSize: itemPerPage.value.toString(),
     };
-    axios.post('/api/board/noticeListBodyThumb.do', param)
+    axios.post('/api/board/noticeListBody.do', param)
         .then((res) => { noticeList.value = res.data; });
 };
 

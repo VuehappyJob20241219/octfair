@@ -7,17 +7,15 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    Aass: typeof import('./src/components/page/Board/Notice/aass.vue')['default']
     AddOn: typeof import('./src/components/layout/AddOn.vue')['default']
     ContextBox: typeof import('./src/components/common/ContextBox.vue')['default']
-    copy: typeof import('./src/components/page/Board/Notice/NoticeSearch copy.vue')['default']
     FoodMenu: typeof import('./src/components/layout/AddOn/FoodMenu.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
-    Hk: typeof import('./src/components/page/Board/Notice/hk.vue')['default']
     ImageNoticeMain: typeof import('./src/components/page/Board/Notice/ImageNoticeMain.vue')['default']
     LeftManuBar: typeof import('./src/components/layout/LeftManuBar.vue')['default']
     LoginMain: typeof import('./src/components/page/Login/LoginMain.vue')['default']
-    MusicBox: typeof import('./src/components/layout/AddOn/MusicBox.vue')['default']
+    LunchMenu: typeof import('./src/components/layout/AddOnPack/LunchMenu.vue')['default']
+    MusicBox: typeof import('./src/components/layout/AddOnPack/MusicBox.vue')['default']
     NoticeMain: typeof import('./src/components/page/Board/Notice/NoticeMain.vue')['default']
     NoticeMainCopy: typeof import('./src/components/page/Board/Notice/NoticeMainCopy.vue')['default']
     NoticeModal: typeof import('./src/components/page/Board/Notice/NoticeModal.vue')['default']
@@ -27,6 +25,6 @@ declare module 'vue' {
     Pagination: typeof import('./src/components/common/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SnowSkin: typeof import('./src/components/layout/AddOn/SnowSkin.vue')['default']
+    SnowSkin: typeof import('./src/components/layout/AddOnPack/SnowSkin.vue')['default']
   }
 }
