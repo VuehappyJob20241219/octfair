@@ -1,38 +1,42 @@
 <template>
     <div>
-        <div v-if="isLoading">기다려주세요</div>
+        <div v-if="isLoading">...로딩중</div>
         <div v-else>
             <ContextBox>공지사항 상세조회</ContextBox>
             <label> 제목 :<input type="text" v-model="detailValue.title"/> </label>
             <label> 내용 :<input type="text" v-model="detailValue.content"/> </label> 
-            <label> 파일 :<input type="file" 
-                                style="display: none" id="fileInput"
-                                @change="handlerSelectFileBtn" /> </label> 
+            <label> 파일 :<input type="file" id="fileInput" style="display: none" @change="handlerSelectFileBtn" /> </label> 
             <label class="img-label" htmlFor="fileInput"> 파일 첨부하기 </label>
             <div @click="handlerDownloadFile">
-                <div v-if="imageUrl">
+                <div v-if="!imageUrl">
+                    <label> 파일명 :</label>
+                </div>
+                <div v-else>
                     <label> 미리보기 : </label>
                     <img :src="imageUrl" />
                 </div>
-                <div v-else>
-                    <label> 파일명 :</label>
-                </div>
             </div>
             <div class="button-box">
-                <button @click="detailValue.noticeIdx ? handlerUpdateBtn() : handlerInsertBtn()">{{detailValue.noticeIdx ? '수정' : '저장'}}</button>
-                <button @click="handlerDeleteBtn">삭제</button>
-                <button @click="apiSuccess">뒤로가기</button>
+                <button @click="detailValue.noticeIdx ? handlerUpdateNoticeBtn() : handlerSaveNoticeBtn()">{{detailValue.noticeIdx ? '수정' : '저장'}}</button>
+                <button @click="handlerDeleteNoticeBtn">삭제</button>
+                <button @click="router.go(-1)">뒤로가기</button>
             </div>
         </div>
+        <div v-if="isError">...에러</div>
     </div>
 </template>
 
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
-import axios from 'axios';
 import { useUserInfo } from '@/stores/userInfo';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
+import { noticeImageGetApi } from '../../../../api/notice/noticeImageGetApi'
+import { useNoticeImageGetMutation } from "../../../../hook/notice/useNoticeImageGetMutation";
+import { useNoticeDetailGetMutation } from "../../../../hook/notice/useNoticeDetailGetMutation";
+import { useNoticeDetailSaveMutation } from "../../../../hook/notice/useNoticeDetailSaveMutation";
 import { useNoticeDetailUpdateMutation } from "../../../../hook/notice/useNoticeDetailUpdateMutation";
+import { useNoticeDetailDeleteMutation } from "../../../../hook/notice/useNoticeDetailDeleteMutation";
+import axios from 'axios';
 
 const router = useRouter();
 const { params } = useRoute();
@@ -42,82 +46,25 @@ const fileData = ref('');
 const imageUrl = ref('');
 const queryClient = useQueryClient();
 
-const getNoticeDetail = async () => {
-    const result = await axios.post('/api/board/noticeDetailBody.do', {noticeSeq : params.idx});
-    return result.data;
-};
-
-const insertNoticeDetail = async () => {
-    const textData = {
-        ...detailValue.value, // title
-        context: detailValue.value.content, // 변수명 오타 차이
-        loginId: userInfo.user.loginId,
-    };
-    await axios.post('/api/board/noticeSaveBody.do', textData);
-};
-
-const deleteNoticeDetail = async () => {
-    await axios.post('/api/board/noticeDeleteBody.do', {noticeSeq : params.idx});
-};
-
-const selectNoticeFile = async (e) => {
-    const fileInfo = e.target.files;
-    const fileInfoSplit = fileInfo[0].name.split('.');
-    const fileExtension = fileInfoSplit[1].toLowerCase();
-
-    if (['jpg', 'gif', 'png', 'webp'].includes(fileExtension))
-        imageUrl.value = URL.createObjectURL(fileInfo[0]);
-    fileData.value = fileInfo[0];
-}
-
-const apiSuccess = () => {
-    router.go(-1);
-    queryClient.invalidateQueries({
-        queryKey: ['noticeList']
-    });
-}
-
 const { 
     data: noticeDetail, 
     isLoading, 
     isSuccess,
-} = useQuery({
-    queryKey: ['noticeDetail'],
-    queryFn: getNoticeDetail,
-    enabled: !!params.idx, // !!는 null/false -> false로 치환해주는 로직
-});
-
-const { 
-    mutate: handlerInsertBtn,
-} = useMutation({
-    mutationFn: insertNoticeDetail,
-    mutatinoKey: ['noticeInsert'],
-    onSuccess: () => { apiSuccess(); },
-});
-
-const { 
-    mutate: handlerUpdateBtn,
-} = useNoticeDetailUpdateMutation(detailValue, params.idx, fileData);
-
-const { 
-    mutate: handlerDeleteBtn,
-} = useMutation({
-    mutationFn: deleteNoticeDetail,
-    mutatinoKey: ['noticeDelete'],
-    onSuccess: () => { apiSuccess(); },
-});
-
-const {
-    mutate: handlerSelectFileBtn,
-} = useMutation({
-    mutationKey: ['noticeFile'],
-    mutationFn: selectNoticeFile,
-});
+    isError,
+} = useNoticeDetailGetMutation(detailValue, params.idx, fileData);
+const { mutate: handlerSaveNoticeBtn, } = useNoticeDetailSaveMutation(detailValue, params.idx, fileData);
+const { mutate: handlerUpdateNoticeBtn, } = useNoticeDetailUpdateMutation(detailValue, params.idx, fileData);
+const { mutate: handlerDeleteNoticeBtn, } = useNoticeDetailDeleteMutation(detailValue, params.idx, fileData);
+const { mutate: handlerSelectFileBtn, } = 
+useNoticeImageGetMutation(detailValue, params.idx, fileData, imageUrl);
 
 watchEffect(() => {
     if (isSuccess.value && noticeDetail.value && params.idx) {
         detailValue.value = toRaw(noticeDetail.value.detail);
-        imageUrl.value = detailValue.value.logicalPath;
+        if (['jpg', 'gif', 'png', 'webp'].includes(detailValue.value.fileExt)) {
+            noticeImageGetApi(imageUrl, params.idx); // Blob방식URL: logicalPath와 달리 클라이언트에 미리 다운시킨 캐시이미지를 보게되는 방식
+            // imageUrl.value = '/api'+noticeDetail.value.detail.logicalPath;
+        }
     }
 });
 </script>

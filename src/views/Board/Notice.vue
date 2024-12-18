@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-const providedValue = ref();
+const providedSearchValue = ref({});
 
-provide('providedValue', providedValue);
+provide('providedSearchValue', providedSearchValue);
 </script>

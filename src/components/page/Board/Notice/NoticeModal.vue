@@ -4,17 +4,15 @@
             <div class="container">
                 <label> 제목 :<input type="text" v-model="noticeDetail.title"/> </label>
                 <label> 내용 :<input type="text" v-model="noticeDetail.context"/> </label> 
-                <label> 파일 :<input type="file" 
-                                    style="display: none" id="fileInput" 
-                                    @change="handlerSelectFile"/> </label> 
+                <label> 파일 :<input type="file" id="fileInput" style="display: none" @change="handlerSelectFile"/> </label> 
                 <label class="img-label" htmlFor="fileInput"> 파일 첨부하기 </label>
                 <div @click="handlerDownloadFile">
-                    <div v-if="imageUrl">
-                        <label> 미리보기 : </label>
-                        <img :src="imageUrl" />
+                    <div v-if="!imageUrl">
+                        <label> 파일명 :</label>
                     </div>
                     <div v-else>
-                        <label> 파일명 :</label>
+                        <label> 미리보기 : </label>
+                        <img :src="imageUrl" />
                     </div>
                 </div>
                 <div class="button-box">

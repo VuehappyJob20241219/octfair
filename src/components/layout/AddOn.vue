@@ -2,12 +2,16 @@
 <div class="container">
     <!-- <SnowSkin :snowConfig="snowConfig" :url="a"/> -->
     <!-- <MusicBox class="wrapper" :width="width" :url="a" /> -->
-    <FoodMenu class="wrapper" :width="width" :url="a" />
+    <LunchMenu class="wrapper" :width="width" :url="a" />
     <!-- <Toast /> -->
 </div>
 </template>
 
 <script setup>
+import SnowSkin from './AddOnPack/SnowSkin.vue';
+import MusicBox from './AddOnPack/MusicBox.vue';
+import LunchMenu from './AddOnPack/LunchMenu.vue';
+
 const width = ref(200);
 const snowConfig = ref({
     numSnow: 100,

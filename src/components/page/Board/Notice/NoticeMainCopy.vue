@@ -22,7 +22,7 @@
                 <template v-if="isSuccess">
                     <template v-if="noticeList.noticeCnt > 0">
                         <tr v-for="notice in noticeList.notice" :key="notice.noticeIdx"
-                            v-on:click="handlerGetDetail(notice.noticeIdx)">
+                            v-on:click="handlerGetDetailBtn(notice.noticeIdx)">
                             <td>{{ notice.noticeIdx }}</td>
                             <td>{{ notice.title }}</td>
                             <td>{{ notice.createdDate.substr(0, 10) }}</td>
@@ -53,29 +53,31 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { useNoticeListGetQuery } from '../../../../hook/notice/useNoticeListGetQuery';
 import Pagination from '../../../common/Pagination.vue';
-import { useNoticeListSearchQuery } from '../../../../hook/notice/useNoticeListSearchQuery';
 
 const router = useRouter();
-const injectedValue= inject('providedValue');
-const cPage = ref(1);
+const injectedSearchValue= inject('providedSearchValue');
 const itemPerPage = ref(12);
+const cPage = ref(1);
 
-const handlerGetDetail = (param) => {
-    router.push({
+const handlerGetDetailBtn = (param) => {
+    router.push({ // URLpath를 push해도 되고 router(index.js)에 명시된 name을 push해도 된다.
         name: 'noticeDetail',
         params: { idx : param },
     });
 };
 
+// 기존방식: 조건을 onMounted()와 watch()에서 감지하여 searchList를 실행하는 방식 (+ searchList는 NoticeMain 내장, Detail은 Modal방식)
+// 아래방식: 조건을 TanStack-useQuery가 감지하여 searchList를 실행하는 방식 (+ searchList는 모듈화하여 외부에, Detail은 별도Page방식)
 const {
-    data: noticeList,
+    data: noticeList, // useQuery(useNoticeListSearchQuery) 내 callback함수 return값이 입력된다
     isLoading,
-    refetch,
     isSuccess,
     isError,
-    isStale,
-} = useNoticeListSearchQuery(injectedValue, cPage);
+    isStale, // 캐시유지 주기
+    refetch, // 자동갱신 주기
+} = useNoticeListGetQuery(injectedSearchValue, cPage, itemPerPage);
 </script>
 
 <style lang="scss" scoped>

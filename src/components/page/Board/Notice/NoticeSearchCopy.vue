@@ -3,17 +3,19 @@
         <input v-model.lazy="searchKey.searchTitle" />
         <input type="date" v-model="searchKey.searchStartDate"/>
         <input type="date" v-model="searchKey.searchEndDate"/>
-        <button v-on:click="handlerSearch">검색</button>
-        <button v-on:click="() => $router.push('notice.do/insert')">신규등록</button>
+        <button @click="handlerSearchKewordBtn">검색</button>
+        <button @click="() => $router.push('notice.do/insert')">신규등록</button>
     </div>
 </template>
 
 <script setup>
-const injectedValue = inject('providedValue');
 const searchKey = ref({});
+const injectedSearchValue = inject('providedSearchValue');
 
-const handlerSearch = () => {
-    injectedValue.value = { ...searchKey.value };
+// 기존 방식: URLquery를 router.push로 뿌려 보내는 방식
+// 아래 방식: provider를 매개해 보내는 방식
+const handlerSearchKewordBtn = () => {
+    injectedSearchValue.value = { ...searchKey.value };
 };
 </script>
 
