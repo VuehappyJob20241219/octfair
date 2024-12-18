@@ -68,7 +68,6 @@ const handlerSaveBtn = () => {
     if(fileData.value)
         formData.append('file', fileData.value);
     formData.append('text', new Blob([JSON.stringify(textData)], {type:'application/json'}));
-    console.log(formData);
     axios.post('/api/board/noticeSaveFileForm.do', formData)
         .then((res) => {
             if(res.data.result.toUpperCase() === 'SUCCESS') {
@@ -89,7 +88,6 @@ const handlerUpdateBtn = () => {
     if(fileData.value)
         formData.append('file', fileData.value);
     formData.append('text', new Blob([JSON.stringify(textData)], {type:'application/json'}));
-    console.log(formData);
     axios.post('/api/board/noticeUpdateFileForm.do', formData)
         .then((res) => {
             if(res.data.result.toUpperCase() === 'SUCCESS') {

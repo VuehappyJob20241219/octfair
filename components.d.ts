@@ -7,23 +7,26 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Aass: typeof import('./src/components/page/Board/Notice/aass.vue')['default']
     AddOn: typeof import('./src/components/layout/AddOn.vue')['default']
     ContextBox: typeof import('./src/components/common/ContextBox.vue')['default']
+    copy: typeof import('./src/components/page/Board/Notice/NoticeSearch copy.vue')['default']
     FoodMenu: typeof import('./src/components/layout/AddOn/FoodMenu.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    Hk: typeof import('./src/components/page/Board/Notice/hk.vue')['default']
     ImageNoticeMain: typeof import('./src/components/page/Board/Notice/ImageNoticeMain.vue')['default']
-    JukeBox: typeof import('./src/components/layout/AddOn/JukeBox.vue')['default']
     LeftManuBar: typeof import('./src/components/layout/LeftManuBar.vue')['default']
     LoginMain: typeof import('./src/components/page/Login/LoginMain.vue')['default']
-    MenuMain: typeof import('./src/components/layout/AddOn/MenuMain.vue')['default']
     MusicBox: typeof import('./src/components/layout/AddOn/MusicBox.vue')['default']
     NoticeMain: typeof import('./src/components/page/Board/Notice/NoticeMain.vue')['default']
+    NoticeMainCopy: typeof import('./src/components/page/Board/Notice/NoticeMainCopy.vue')['default']
     NoticeModal: typeof import('./src/components/page/Board/Notice/NoticeModal.vue')['default']
+    NoticeModalCopy: typeof import('./src/components/page/Board/Notice/NoticeModalCopy.vue')['default']
     NoticeSearch: typeof import('./src/components/page/Board/Notice/NoticeSearch.vue')['default']
+    NoticeSearchCopy: typeof import('./src/components/page/Board/Notice/NoticeSearchCopy.vue')['default']
     Pagination: typeof import('./src/components/common/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SnowMain: typeof import('./src/components/layout/AddOn/SnowMain.vue')['default']
     SnowSkin: typeof import('./src/components/layout/AddOn/SnowSkin.vue')['default']
   }
 }

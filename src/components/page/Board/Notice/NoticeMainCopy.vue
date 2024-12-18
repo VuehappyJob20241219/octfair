@@ -1,5 +1,5 @@
 <template>
-    <!-- 테이블블뷰 -->
+    <!-- 테이블뷰 -->
     <div class="divNoticeList">
         현재 페이지: {{ cPage }} 총 개수: {{ noticeList?.noticeCnt || 0 }}
         <table>
@@ -18,10 +18,11 @@
                 </tr>
             </thead>
             <tbody>
-                <template v-if="noticeList">
+                <template v-if="isLoading">...로딩중</template>
+                <template v-if="isSuccess">
                     <template v-if="noticeList.noticeCnt > 0">
                         <tr v-for="notice in noticeList.notice" :key="notice.noticeIdx"
-                            v-on:click="handlerModal(notice.noticeIdx)">
+                            v-on:click="handlerGetDetail(notice.noticeIdx)">
                             <td>{{ notice.noticeIdx }}</td>
                             <td>{{ notice.title }}</td>
                             <td>{{ notice.createdDate.substr(0, 10) }}</td>
@@ -34,60 +35,47 @@
                         </tr>
                     </template>
                 </template>
+                <template v-if="isError">...에러</template>
             </tbody>
         </table>
 
         <!-- 페이지네이션 -->
         <Pagination 
             :totalItems="noticeList?.noticeCnt || 0"
-            :items-per-page="5"
+            :items-per-page="itemPerPage"
             :max-pages-shown="5"
             :onClick="searchList"
             v-model="cPage"
         />
-
-        <!-- 모달 -->
-        <NoticeModal v-if="modalStore.modalState"
-            :idx="noticeIdx"
-            @postSuccess="searchList"
-            @modalClose="noticeIdx=0"
-        />
     </div>
+    <router-view></router-view>
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
-import { onMounted } from 'vue';
-import axios from 'axios';
+import { useRouter } from 'vue-router';
 import Pagination from '../../../common/Pagination.vue';
-import { useModalStore } from '@/stores/modalState';
+import { useNoticeListSearchQuery } from '../../../../hook/notice/useNoticeListSearchQuery';
 
-const route = useRoute();
-const noticeList = ref();
-const itemPerPage = ref(12);
+const router = useRouter();
+const injectedValue= inject('providedValue');
 const cPage = ref(1);
-const noticeIdx = ref(0);
-const modalStore = useModalStore();
+const itemPerPage = ref(12);
 
-const searchList = () => {
-    const param = {
-        searchTitle: route.query.searchTitle || '',
-        searchStDate: route.query.searchStDate || '',
-        searchEdDate: route.query.searchEdDate || '',
-        currentPage: cPage.value.toString(),
-        pageSize: itemPerPage.value.toString(),
-    };
-    axios.post('/api/board/noticeListBodyThumb.do', param)
-        .then((res) => { noticeList.value = res.data; });
+const handlerGetDetail = (param) => {
+    router.push({
+        name: 'noticeDetail',
+        params: { idx : param },
+    });
 };
 
-const handlerModal = (idx) => {
-    modalStore.setModalState();
-    noticeIdx.value = idx;
-}
-
-onMounted(() => { searchList(); });
-watch((route), () => searchList());
+const {
+    data: noticeList,
+    isLoading,
+    refetch,
+    isSuccess,
+    isError,
+    isStale,
+} = useNoticeListSearchQuery(injectedValue, cPage);
 </script>
 
 <style lang="scss" scoped>

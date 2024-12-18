@@ -57,7 +57,7 @@ const searchList = () => {
         currentPage: cPage.value.toString(),
         pageSize: itemPerPage.value.toString(),
     };
-    axios.post('/api/board/noticeListBodyThumb.do', param)
+    axios.post('/api/board/noticeListBody.do', param) // '/api/board/noticeListBodyThumb.do' 로 보내면 썸네일 처리
         .then((res) => { noticeList.value = res.data; });
 };
 

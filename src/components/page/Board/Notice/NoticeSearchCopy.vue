@@ -1,33 +1,20 @@
 <template>
     <div class="search-box">
-        <input v-model.lazy="searchTitle" />
-        <input type="date" v-model="searchStartDate"/>
-        <input type="date" v-model="searchEndDate"/>
+        <input v-model.lazy="searchKey.searchTitle" />
+        <input type="date" v-model="searchKey.searchStartDate"/>
+        <input type="date" v-model="searchKey.searchEndDate"/>
         <button v-on:click="handlerSearch">검색</button>
-        <button v-on:click="modalStore.setModalState()">신규등록</button>
+        <button v-on:click="() => $router.push('notice.do/insert')">신규등록</button>
     </div>
 </template>
 
 <script setup>
-import router from '@/router'
-import { useModalStore } from '@/stores/modalState';
-
-const searchTitle = ref('');
-const searchStartDate = ref('');
-const searchEndDate = ref('');
-const modalStore = useModalStore();
+const injectedValue = inject('providedValue');
+const searchKey = ref({});
 
 const handlerSearch = () => {
-    const query = [];
-    !searchTitle.value || query.push(`searchTitle=${searchTitle.value}`);
-    !searchStartDate.value || query.push(`searchStDate=${searchStartDate.value}`);
-    !searchEndDate.value || query.push(`searchEdDate=${searchEndDate.value}`);
-    const queryString = query.length > 0 ? `?${query.join('&')}` : '';
-
-    router.push(queryString);
+    injectedValue.value = { ...searchKey.value };
 };
-
-watchEffect(() => window.location.search && router.push()); // URL이 변경되면 리셋
 </script>
 
 <style lang="scss" scoped>

@@ -52,6 +52,7 @@ const animateSnow = () => {
             context.fill();
 
             // 눈송이 이동
+            flake.x += flake.speed/5;
             flake.y += flake.speed;
             if (flake.y > canvas.height) {
                 flake.y = -flake.radius; // 화면 위로 다시 이동

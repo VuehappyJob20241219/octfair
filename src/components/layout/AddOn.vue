@@ -1,8 +1,8 @@
 <template>
 <div class="container">
-    <!-- <SnowSkin :snowConfig="snowConfig"/> -->
-    <!-- <MusicBox class="wrapper" :width="width" /> -->
-    <FoodMenu class="wrapper" :width="width" />
+    <!-- <SnowSkin :snowConfig="snowConfig" :url="a"/> -->
+    <!-- <MusicBox class="wrapper" :width="width" :url="a" /> -->
+    <FoodMenu class="wrapper" :width="width" :url="a" />
     <!-- <Toast /> -->
 </div>
 </template>
