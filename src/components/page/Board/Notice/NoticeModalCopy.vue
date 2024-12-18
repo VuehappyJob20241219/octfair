@@ -6,9 +6,10 @@
             <label> 제목 :<input type="text" v-model="detailValue.title"/> </label>
             <label> 내용 :<input type="text" v-model="detailValue.content"/> </label> 
             <label> 파일 :<input type="file" 
-                                style="display: none" id="fileInput"/> </label> 
+                                style="display: none" id="fileInput"
+                                @change="handlerSelectFileBtn" /> </label> 
             <label class="img-label" htmlFor="fileInput"> 파일 첨부하기 </label>
-            <!-- <div @click="handlerDownloadFile">
+            <div @click="handlerDownloadFile">
                 <div v-if="imageUrl">
                     <label> 미리보기 : </label>
                     <img :src="imageUrl" />
@@ -16,7 +17,7 @@
                 <div v-else>
                     <label> 파일명 :</label>
                 </div>
-            </div> -->
+            </div>
             <div class="button-box">
                 <button @click="detailValue.noticeIdx ? handlerUpdateBtn() : handlerInsertBtn()">{{detailValue.noticeIdx ? '수정' : '저장'}}</button>
                 <button @click="handlerDeleteBtn">삭제</button>
@@ -35,9 +36,11 @@ import { useNoticeDetailUpdateMutation } from "../../../../hook/notice/useNotice
 
 const router = useRouter();
 const { params } = useRoute();
-const detailValue = ref({});
-const queryClient = useQueryClient();
 const userInfo = useUserInfo();
+const detailValue = ref({});
+const fileData = ref('');
+const imageUrl = ref('');
+const queryClient = useQueryClient();
 
 const getNoticeDetail = async () => {
     const result = await axios.post('/api/board/noticeDetailBody.do', {noticeSeq : params.idx});
@@ -56,6 +59,16 @@ const insertNoticeDetail = async () => {
 const deleteNoticeDetail = async () => {
     await axios.post('/api/board/noticeDeleteBody.do', {noticeSeq : params.idx});
 };
+
+const selectNoticeFile = async (e) => {
+    const fileInfo = e.target.files;
+    const fileInfoSplit = fileInfo[0].name.split('.');
+    const fileExtension = fileInfoSplit[1].toLowerCase();
+
+    if (['jpg', 'gif', 'png', 'webp'].includes(fileExtension))
+        imageUrl.value = URL.createObjectURL(fileInfo[0]);
+    fileData.value = fileInfo[0];
+}
 
 const apiSuccess = () => {
     router.go(-1);
@@ -84,7 +97,7 @@ const {
 
 const { 
     mutate: handlerUpdateBtn,
-} = useNoticeDetailUpdateMutation(detailValue, params.idx);
+} = useNoticeDetailUpdateMutation(detailValue, params.idx, fileData);
 
 const { 
     mutate: handlerDeleteBtn,
@@ -94,9 +107,17 @@ const {
     onSuccess: () => { apiSuccess(); },
 });
 
+const {
+    mutate: handlerSelectFileBtn,
+} = useMutation({
+    mutationKey: ['noticeFile'],
+    mutationFn: selectNoticeFile,
+});
+
 watchEffect(() => {
     if (isSuccess.value && noticeDetail.value && params.idx) {
         detailValue.value = toRaw(noticeDetail.value.detail);
+        imageUrl.value = detailValue.value.logicalPath;
     }
 });
 </script>
