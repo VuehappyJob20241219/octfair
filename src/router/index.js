@@ -3,6 +3,7 @@ import Login from '../views/Login/Login.vue';
 import DashBoard from '../views/DashBoard/DashBoard.vue';
 import Notice from '../views/Board/Notice.vue';
 import NoticeDetailTanstack from '../components/page/Board/Notice/NoticeDetailTanstack.vue';
+import AddOn from '../components/layout/AddOn.vue';
 
 const routes = [
   {
@@ -14,7 +15,12 @@ const routes = [
     path: '/vue',
     name: 'vue',
     component: DashBoard,
-    children : [
+  children: [
+      {
+        path: '',
+        name: 'addon',
+        component: AddOn
+      },
       {
         path: 'board',
         name: 'board',

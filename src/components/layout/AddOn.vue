@@ -1,7 +1,7 @@
 <template>
 <div class="container">
-    <!-- <SnowSkin :snowConfig="snowConfig" :url="a"/> -->
-    <!-- <MusicBox class="wrapper" :width="width" :url="a" /> -->
+    <SnowSkin :snowConfig="snowConfig" :url="a"/> 
+    <MusicBox class="wrapper" :width="width" :url="a" /> 
     <LunchMenu class="wrapper" :width="width" :url="a" />
     <!-- <Toast /> -->
 </div>

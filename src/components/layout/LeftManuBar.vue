@@ -27,7 +27,7 @@
             </div>
         </li>
     </ul>
-    <AddOn />
+    <!-- <AddOn /> -->
 </template>
 
 <script setup>
