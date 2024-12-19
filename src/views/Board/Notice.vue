@@ -1,10 +1,12 @@
 <template>
     <!-- <NoticeSearch /> -->
-    <NoticeSearchCopy />
+    <NoticeSearchTanstack />
+
     <ContextBox>공지사항</ContextBox>
-    <!-- <ImageNoticeMain /> -->
+    
+    <ImageNoticeMain />
     <!-- <NoticeMain /> -->
-    <NoticeMainCopy />
+    <!-- <NoticeMainTanstack /> -->
 </template>
 
 <script setup>

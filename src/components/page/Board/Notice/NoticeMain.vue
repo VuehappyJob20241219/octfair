@@ -47,7 +47,7 @@
         />
 
         <!-- 모달 -->
-        <NoticeModal v-if="modalStore.modalState"
+        <NoticeDetailTanstack v-if="modalStore.modalState"
             :idx="noticeIdx"
             @postSuccess="searchList"
             @modalClose="noticeIdx=0"

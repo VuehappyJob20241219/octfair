@@ -18,7 +18,7 @@
             </div>
             <div class="button-box">
                 <button @click="detailValue.noticeIdx ? handlerUpdateNoticeBtn() : handlerSaveNoticeBtn()">{{detailValue.noticeIdx ? '수정' : '저장'}}</button>
-                <button @click="handlerDeleteNoticeBtn">삭제</button>
+                <button @click="handlerDeleteNoticeBtn" v-if="detailValue.noticeIdx">삭제</button>
                 <button @click="router.go(-1)">뒤로가기</button>
             </div>
         </div>

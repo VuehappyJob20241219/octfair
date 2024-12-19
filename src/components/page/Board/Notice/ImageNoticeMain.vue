@@ -5,7 +5,7 @@
         <div class="card"
             v-for="notice in noticeList.notice"
             :key="notice.noticeIdx"
-            v-on:click="handlerGetModal(notice.noticeIdx)"
+            v-on:click="handlerGetDetailBtn(notice.noticeIdx)"
         >
             <div class="image-wrapper">
                 <img v-if="notice.logicalPath" :src="`/api${notice.logicalPath}`" />
@@ -27,7 +27,7 @@
     </div>
 
     <!-- 모달 -->
-    <NoticeModal v-if="modalStore.modalState"
+    <NoticeDetail v-if="modalStore.modalState"
         :idx="noticeIdx"
         v-on:postSuccess="searchList"
         @modalClose="noticeIdx=0"
@@ -38,36 +38,65 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import { useNoticeListGetQuery } from '../../../../hook/notice/useNoticeListGetQuery';
 import axios from 'axios';
 import Pagination from '../../../common/Pagination.vue';
 import { useModalStore } from '@/stores/modalState';
+import { useRouter } from 'vue-router';
 
 const route = useRoute();
-const noticeList = ref();
+const injectedSearchValue= inject('providedSearchValue');
+// const noticeList = ref();
 const itemPerPage = ref(12);
 const cPage = ref(1);
 const noticeIdx = ref(0);
 const modalStore = useModalStore();
+const queryClient = useQueryClient();
+const router = useRouter();
 
 const searchList = () => {
-    const param = {
-        searchTitle: route.query.searchTitle || '',
-        searchStDate: route.query.searchStDate || '',
-        searchEdDate: route.query.searchEdDate || '',
-        currentPage: cPage.value.toString(),
-        pageSize: itemPerPage.value.toString(),
-    };
-    axios.post('/api/board/noticeListBody.do', param) // '/api/board/noticeListBodyThumb.do' 로 보내면 썸네일 처리
-        .then((res) => { noticeList.value = res.data; });
+    // // 기존방식
+    // const param = {
+    //     searchTitle: route.query.searchTitle || '',
+    //     searchStDate: route.query.searchStDate || '',
+    //     searchEdDate: route.query.searchEdDate || '',
+    //     currentPage: cPage.value.toString(),
+    //     pageSize: itemPerPage.value.toString(),
+    // };
+    // axios.post('/api/board/noticeListBody.do', param) // '/api/board/noticeListBodyThumb.do' 로 보내면 썸네일 처리
+    //     .then((res) => { noticeList.value = res.data; });
+        
+    // Tanstack방식
+    queryClient.invalidateQueries({ // 'noticeList'란 key로 NoticeMain에 있는 useQuery를 가동시켜 list 새로고침
+        queryKey: ['noticeList']
+    })
 };
 
-const handlerGetModal = (idx) => {
+const handlerGetDetailBtn = (param) => {
+    // 기존방식
     modalStore.setModalState();
-    noticeIdx.value = idx;
-}
+    noticeIdx.value = param;
 
-onMounted(() => { searchList(); });
-watch((route), () => searchList());
+    // Tanstack방식
+    router.push({ // URLpath를 push해도 되고 router(index.js)에 명시된 name을 push해도 된다.
+        name: 'noticeDetail',
+        params: { idx : param },
+    });
+};
+
+// // 기존방식: 조건을 onMounted()와 watch()에서 감지하여 searchList를 실행하는 방식 (+ searchList는 NoticeMain 내장, Detail은 Modal방식)
+// onMounted(() => { searchList(); });
+// watch((route), () => searchList());
+// 아래방식: 조건을 TanStack-useQuery가 감지하여 searchList를 실행하는 방식 (+ searchList는 모듈화하여 외부에, Detail은 별도Page방식)
+const {
+    data: noticeList, // useQuery(useNoticeListSearchQuery) 내 callback함수 return값이 입력된다
+    isLoading,
+    isSuccess,
+    isError,
+    isStale, // 캐시유지 주기
+    refetch, // 자동갱신 주기
+} = useNoticeListGetQuery(injectedSearchValue, cPage, itemPerPage);
 </script>
 
 <style lang="scss" scoped>

@@ -17,7 +17,7 @@
                 </div>
                 <div class="button-box">
                     <button v-on:click="noticeDetail.noticeIdx ? handlerUpdateBtn() : handlerSaveBtn()">{{noticeDetail.noticeIdx ? '수정' : '저장'}}</button>
-                    <button v-if="props.idx" v-on:click="handlerDeleteBtn">삭제</button>
+                    <button v-on:click="handlerDeleteBtn" v-if="props.idx">삭제</button>
                     <button v-on:click="modalStore.setModalState()">나가기</button>
                 </div>
             </div>
@@ -27,9 +27,11 @@
 
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { useModalStore } from '@/stores/modalState';
 import { useUserInfo } from '@/stores/userInfo';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 const emits = defineEmits(['postSuccess', 'modalClose']);
 const props = defineProps(['idx']);
@@ -38,6 +40,8 @@ const userInfo = useUserInfo();
 const noticeDetail = ref({});
 const imageUrl = ref('');
 const fileData = ref('');
+const queryClient = useQueryClient();
+const router = useRouter();
 
 const handlerGetModalDetail = () => {
     axios.post('/api/board/noticeDetailBody.do', {noticeSeq : props.idx})

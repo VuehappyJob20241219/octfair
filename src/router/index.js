@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/Login/Login.vue';
 import DashBoard from '../views/DashBoard/DashBoard.vue';
 import Notice from '../views/Board/Notice.vue';
-import NoticeModalCopy from '../components/page/Board/Notice/NoticeModalCopy.vue';
+import NoticeDetailTanstack from '../components/page/Board/Notice/NoticeDetailTanstack.vue';
 
 const routes = [
   {
@@ -27,19 +27,19 @@ const routes = [
             //   {
             //     path: ':idx', // Dynamic라우터
             //     name: 'noticeDetail',
-            //     component: NoticeModalCopy,
+            //     component: NoticeDetailTanstack,
             //   },
             // ],
           },
           {
             path: 'notice.do/insert',
             name: 'noticeInsert',
-            component: NoticeModalCopy,
+            component: NoticeDetailTanstack,
           },
           {
             path: 'notice.do/:idx',
             name: 'noticeDetail',
-            component: NoticeModalCopy,
+            component: NoticeDetailTanstack,
           },
         ],
       },
