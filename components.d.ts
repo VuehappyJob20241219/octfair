@@ -22,6 +22,7 @@ declare module 'vue' {
     NoticeSearch: typeof import('./src/components/page/Board/Notice/NoticeSearch.vue')['default']
     NoticeSearchTanstack: typeof import('./src/components/page/Board/Notice/NoticeSearchTanstack.vue')['default']
     Pagination: typeof import('./src/components/common/Pagination.vue')['default']
+    ResumeMain: typeof import('./src/components/page/Apply/Resume/ResumeMain.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SnowSkin: typeof import('./src/components/layout/AddOnPack/SnowSkin.vue')['default']

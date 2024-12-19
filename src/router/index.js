@@ -4,6 +4,7 @@ import DashBoard from '../views/DashBoard/DashBoard.vue';
 import Notice from '../views/Board/Notice.vue';
 import NoticeDetailTanstack from '../components/page/Board/Notice/NoticeDetailTanstack.vue';
 import AddOn from '../components/layout/AddOn.vue';
+import Resume from '../views/Apply/Resume.vue'
 
 const routes = [
   {
@@ -20,6 +21,17 @@ const routes = [
         path: '',
         name: 'addon',
         component: AddOn
+      },
+      {
+        path: 'apply',
+        name: 'apply',
+        children: [
+          {
+            path: 'resume.do',
+            name: 'resume',
+            component: Resume,
+          }
+        ],
       },
       {
         path: 'board',

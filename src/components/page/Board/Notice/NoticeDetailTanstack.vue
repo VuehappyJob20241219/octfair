@@ -32,7 +32,7 @@ import { useUserInfo } from '@/stores/userInfo';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
 import { noticeImageGetApi } from '../../../../api/notice/noticeImageGetApi'
 import { useNoticeImageGetMutation } from "../../../../hook/notice/useNoticeImageGetMutation";
-import { useNoticeDetailGetQuery } from "../../../../hook/notice/useNoticeDetailGetQueryjs";
+import { useNoticeDetailGetQuery } from "../../../../hook/notice/useNoticeDetailGetQuery";
 import { useNoticeDetailSaveMutation } from "../../../../hook/notice/useNoticeDetailSaveMutation";
 import { useNoticeDetailUpdateMutation } from "../../../../hook/notice/useNoticeDetailUpdateMutation";
 import { useNoticeDetailDeleteMutation } from "../../../../hook/notice/useNoticeDetailDeleteMutation";
@@ -57,8 +57,7 @@ const {
 const { mutate: handlerSaveNoticeBtn, } = useNoticeDetailSaveMutation(detailValue, params.idx, fileData);
 const { mutate: handlerUpdateNoticeBtn, } = useNoticeDetailUpdateMutation(detailValue, params.idx, fileData);
 const { mutate: handlerDeleteNoticeBtn, } = useNoticeDetailDeleteMutation(detailValue, params.idx, fileData);
-const { mutate: handlerSelectFileBtn, } = 
-useNoticeImageGetMutation(detailValue, params.idx, fileData, imageUrl);
+const { mutate: handlerSelectFileBtn, } = useNoticeImageGetMutation(detailValue, params.idx, fileData, imageUrl);
 
 watchEffect(() => {
     if (isSuccess.value && noticeDetail.value && params.idx) {

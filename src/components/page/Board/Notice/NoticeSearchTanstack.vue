@@ -1,5 +1,6 @@
 <template>
     <div class="search-box">
+        <label>제목: </label>
         <input v-model.lazy="searchKey.searchTitle" />
         <input type="date" v-model="searchKey.searchStartDate"/>
         <input type="date" v-model="searchKey.searchEndDate"/>

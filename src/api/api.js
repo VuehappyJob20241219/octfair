@@ -6,3 +6,7 @@ export const Notice = {
     UpdateNoticeDetail: '/api/board/noticeUpdateFileForm.do',
     DeleteNoticeDetail: '/api/board/noticeDeleteBody.do',
 }
+export const Resume = {
+    GetResumeList: '/api/apply/resumeListBody.do',
+    CopyResumeAll: '/api/apply/resumeCopyBody.do'
+}
