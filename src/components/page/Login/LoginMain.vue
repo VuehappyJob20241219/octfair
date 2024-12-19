@@ -29,7 +29,7 @@
                         <input required type="password" v-model="loginInfo.pwd" />
                     </div>
                     <div class="joinDiv">
-                        <strong class="strong">[일반회원가입]</strong>
+                        <strong class="strong" @click="modalStore.modalState=true">[일반회원가입]</strong>
                         <strong class="strong">[기업회원가입]</strong>
                     </div>
                     <div>
@@ -39,6 +39,9 @@
             </div>
         </div>
     </div>
+
+    <!-- 모달 -->
+    <SignUpModal v-if="modalStore.modalState"/>
 </template>
 
 <script setup>
@@ -46,10 +49,15 @@ import { useRouter } from 'vue-router';
 import logo from '../../../assets/logo.png';
 import { nullCheck } from '../../../common/nullCheck';
 import { useUserInfo } from '../../../stores/userInfo';
+// 모달 사용
+import { useModalStore } from '@/stores/modalState';
+import SignUpModal from './SignUpModal.vue';
 
 const loginInfo = ref({});
 const userInfo = useUserInfo();
 const router = useRouter();
+// 모달 사용
+const modalStore = useModalStore();
 
 const handlerLogin = async () => {
     const isNull = nullCheck([
@@ -66,6 +74,7 @@ const handlerLogin = async () => {
         return;
     }
 };
+
 </script>
 
 <style scoped>
