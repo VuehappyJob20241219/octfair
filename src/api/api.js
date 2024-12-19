@@ -6,3 +6,7 @@ export const Notice = {
     UpdateNoticeDetail: '/api/board/noticeUpdateFileForm.do',
     DeleteNoticeDetail: '/api/board/noticeDeleteBody.do',
 }
+
+export const Approval = {
+    GetApprovalList: '/api/manage-post/readPostListBody.do',
+}

@@ -4,6 +4,7 @@ import DashBoard from '../views/DashBoard/DashBoard.vue';
 import Notice from '../views/Board/Notice.vue';
 import NoticeDetailTanstack from '../components/page/Board/Notice/NoticeDetailTanstack.vue';
 import AddOn from '../components/layout/AddOn.vue';
+import Approval from '../views/Approval/Approval.vue';
 
 const routes = [
   {
@@ -48,7 +49,21 @@ const routes = [
             component: NoticeDetailTanstack,
           },
         ],
+    },
+    {
+      path: 'manage-post',
+      name: 'manage-post',
+      children: [
+        {
+          path: 'approval.do',
+          name: 'approval',
+          component: Approval,
+        }
+      ]
+        
+
       },
+
     ],
   },
 ];
