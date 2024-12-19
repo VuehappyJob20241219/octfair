@@ -78,11 +78,11 @@ const handlerGetDetailBtn = (param) => {
     modalStore.setModalState();
     noticeIdx.value = param;
 
-    // Tanstack방식
-    router.push({ // URLpath를 push해도 되고 router(index.js)에 명시된 name을 push해도 된다.
-        name: 'noticeDetail',
-        params: { idx : param },
-    });
+    // // Tanstack방식
+    // router.push({ // URLpath를 push해도 되고 router(index.js)에 명시된 name을 push해도 된다.
+    //     name: 'noticeDetail',
+    //     params: { idx : param },
+    // });
 };
 
 // // 기존방식: 조건을 onMounted()와 watch()에서 감지하여 searchList를 실행하는 방식 (+ searchList는 NoticeMain 내장, Detail은 Modal방식)

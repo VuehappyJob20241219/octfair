@@ -19,7 +19,7 @@
             <div class="button-box">
                 <button @click="detailValue.noticeIdx ? handlerUpdateNoticeBtn() : handlerSaveNoticeBtn()">{{detailValue.noticeIdx ? '수정' : '저장'}}</button>
                 <button @click="handlerDeleteNoticeBtn" v-if="detailValue.noticeIdx">삭제</button>
-                <button @click="router.go(-1)">뒤로가기</button>
+                <button @click="router.go(-1); modalStore.modalstate.value(false);">뒤로가기</button>
             </div>
         </div>
         <div v-if="isError">...에러</div>
@@ -32,10 +32,11 @@ import { useUserInfo } from '@/stores/userInfo';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
 import { noticeImageGetApi } from '../../../../api/notice/noticeImageGetApi'
 import { useNoticeImageGetMutation } from "../../../../hook/notice/useNoticeImageGetMutation";
-import { useNoticeDetailGetMutation } from "../../../../hook/notice/useNoticeDetailGetMutation";
+import { useNoticeDetailGetQuery } from "../../../../hook/notice/useNoticeDetailGetQueryjs";
 import { useNoticeDetailSaveMutation } from "../../../../hook/notice/useNoticeDetailSaveMutation";
 import { useNoticeDetailUpdateMutation } from "../../../../hook/notice/useNoticeDetailUpdateMutation";
 import { useNoticeDetailDeleteMutation } from "../../../../hook/notice/useNoticeDetailDeleteMutation";
+import { useModalStore } from '@/stores/modalState';
 import axios from 'axios';
 
 const router = useRouter();
@@ -45,13 +46,14 @@ const detailValue = ref({});
 const fileData = ref('');
 const imageUrl = ref('');
 const queryClient = useQueryClient();
+const modalStore = useModalStore();
 
 const { 
     data: noticeDetail, 
     isLoading, 
     isSuccess,
     isError,
-} = useNoticeDetailGetMutation(detailValue, params.idx, fileData);
+} = useNoticeDetailGetQuery(detailValue, params.idx, fileData);
 const { mutate: handlerSaveNoticeBtn, } = useNoticeDetailSaveMutation(detailValue, params.idx, fileData);
 const { mutate: handlerUpdateNoticeBtn, } = useNoticeDetailUpdateMutation(detailValue, params.idx, fileData);
 const { mutate: handlerDeleteNoticeBtn, } = useNoticeDetailDeleteMutation(detailValue, params.idx, fileData);
