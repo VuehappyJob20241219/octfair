@@ -6,10 +6,17 @@ import router from './router';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { VueQueryPlugin } from '@tanstack/vue-query';
 import VueAwesomePaginate from 'vue-awesome-paginate';
+// 토스트 메시지 사용을 위한 import
+import Toast, { POSITION } from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 
 const app = createApp(App);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 app.use(VueQueryPlugin).use(pinia).use(router).use(VueAwesomePaginate);
+
+app.use(Toast, {
+    position: POSITION.TOP_RIGHT, // 토스트 메시지 위치 설정
+});
 
 app.mount('#app');
