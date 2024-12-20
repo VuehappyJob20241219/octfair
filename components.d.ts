@@ -24,6 +24,7 @@ declare module 'vue' {
     Pagination: typeof import('./src/components/common/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SignUpModal: typeof import('./src/components/page/Login/SignUpModal.vue')['default']
     SnowSkin: typeof import('./src/components/layout/AddOnPack/SnowSkin.vue')['default']
   }
 }

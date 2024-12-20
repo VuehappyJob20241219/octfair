@@ -1,9 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { useRouter } from 'vue-router';
+import { useModalStore } from '@/stores/modalState';
 
 export const useNoticeImageGetMutation = (detailValue, idx, fileData, imageUrl) => {
     const queryClient = useQueryClient();
     const router = useRouter();
+    const modalStore = useModalStore();
 
     const selectNoticeFile = async (e) => {
         const fileInfo = e.target.files;
