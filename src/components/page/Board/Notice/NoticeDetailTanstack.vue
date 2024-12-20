@@ -32,7 +32,7 @@ import { useUserInfo } from '@/stores/userInfo';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
 import { noticeImageGetApi } from '../../../../api/notice/noticeImageGetApi'
 import { useNoticeImageGetMutation } from "../../../../hook/notice/useNoticeImageGetMutation";
-import { useNoticeDetailGetQuery } from "../../../../hook/notice/useNoticeDetailGetQueryjs";
+import { useNoticeDetailGetQuery } from "../../../../hook/notice/useNoticeDetailGetQuery";
 import { useNoticeDetailSaveMutation } from "../../../../hook/notice/useNoticeDetailSaveMutation";
 import { useNoticeDetailUpdateMutation } from "../../../../hook/notice/useNoticeDetailUpdateMutation";
 import { useNoticeDetailDeleteMutation } from "../../../../hook/notice/useNoticeDetailDeleteMutation";
