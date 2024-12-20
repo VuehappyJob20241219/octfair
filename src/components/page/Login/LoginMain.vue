@@ -41,7 +41,9 @@
     </div>
 
     <!-- 모달 -->
-    <SignUpModal v-if="modalStore.modalState"/>
+    <SignUpModal v-if="modalStore.modalState"
+    @modalClose="noticeIdx=0"
+    />
 </template>
 
 <script setup>
@@ -52,6 +54,9 @@ import { useUserInfo } from '../../../stores/userInfo';
 // 모달 사용
 import { useModalStore } from '@/stores/modalState';
 import SignUpModal from './SignUpModal.vue';
+// 공통 훅
+import { useEnterKey } from '@/common/hook/useEnterKey';
+import { useEscKey } from '@/common/hook/useEscKey';
 
 const loginInfo = ref({});
 const userInfo = useUserInfo();
@@ -74,7 +79,9 @@ const handlerLogin = async () => {
         return;
     }
 };
-
+// 엔터키 훅 사용
+useEnterKey(handlerLogin);
+useEscKey(() => {modalStore.modatState.value=false});
 </script>
 
 <style scoped>

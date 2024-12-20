@@ -3,15 +3,29 @@
     <div class="signUpModalContent">
       <h1> 일반회원가입 </h1>
 
-      <table></table>
-
-
+      <Button @click="signUpModalClose()">닫기</Button>
     </div>
   </div>
 </template>
 
 <script setup>
-</script>
+import { useModalStore } from '@/stores/modalState';
+import { toast } from '@/common/toastMessage';
+  import { useEscKey } from '@/common/hook/useEscKey';
+
+const modalStore = useModalStore();
+
+const signUpModalClose = () => {
+    modalStore.setModalState();
+    toast("1111");
+    toast.success("2222");
+    toast.error("3333");
+    toast.info("4444");
+    toast.warning("5555");
+};
+
+//useEscKey(signUpModalClose);
+</script> 
 
 <style scoped>
 .signUpModal{
@@ -33,8 +47,34 @@
   border-radius: 10px;
   width: 500px;
   height: 600px;
-  font-size: 20px;
+  font-size: 20px;  
   color: #333;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    color: white;
+    width: 70px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    box-shadow: 0 4px #999;
+    background-color: #3bb2ea;
+}
+button:hover {
+    background-color: #45a049;
+}
+
+button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 2px #666;
+    transform: translateY(2px);
 }
 </style>
