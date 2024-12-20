@@ -19,8 +19,8 @@
                 </tr>
             </thead>
             <tbody>     
-                    <template v-if="resultCount> 0">
-                        <tr v-for=" approval in resultList" :key="approval.postIdx">
+                    <!-- <template v-if="resultData.resultCount> 0">
+                        <tr v-for=" approval in resultData.resultList" :key="approval.postIdx">
                             <td>{{ approval.postIdx }}</td>
                             <td>{{ approval.title }}</td>
                             <td>{{ approval.workLocation }}</td>
@@ -35,15 +35,15 @@
                         <tr>
                             <td colspan="7">일치하는 검색 결과가 없습니다</td>
                         </tr>
-                    </template>
+                    </template> -->
           
               
             </tbody>
         </table>
 
         <!-- 페이지네이션 -->
+        <!-- :totalItems="resultData.resultCount || 0" -->
         <Pagination 
-            :totalItems="resultCount || 0"
             :items-per-page="itemPerPage"
             :max-pages-shown="5"
             :onClick="searchList"
@@ -55,51 +55,22 @@
 
 <script setup>
 import { useRoute } from 'vue-router';
-import axios from 'axios';
-import { onMounted } from 'vue';
+import { useApprovalListGetQuery } from '../../../hook/approval/useApprovalListGetQuery';
 
-
-const resultList = ref();
-const resultCount = ref(0);
+const route = useRoute();
+const injectedSearchValue = inject('providedSearchValue');
 const itemPerPage = ref(6);
 const cPage = ref(1);
-const route = useRoute();
 
+const path = route.path;
 
-const searchList = async () => {
-    
-    const param = {
-        searchTitle: route.query.searchTitle || '',
-        searchStDate: route.query.searchStDate || '',
-        searchEdDate: route.query.searchEdDate || '',
-        currentPage: cPage.value.toString(),
-        pageSize: itemPerPage.value.toString(),
-    };
+const {
+        data: resultData, // useQuery로 가져온 데이터
+        isLoading,
+        isSuccess,
+        isError,
+} = useApprovalListGetQuery(injectedSearchValue, cPage, itemPerPage, path);
 
-    try {
-        const res = await axios.post('/api/manage-post/readPostListBody.do', param)
-        const path = route.path;
-
-        if (res.data) {
-            switch (path) {
-                case '/vue/manage-post/post.do':
-                    resultList.value = res.data.approvalList;
-                    resultCount.value = res.data.approvalPostCnt;
-                    break;
-                case '/vue/manage-post/approval.do':
-                    resultList.value = res.data.pendingList;
-                    resultCount.value = res.data.pendingPostCnt;
-                    break;
-            }
-        }
-        if(path) cPage.value = 1; 
-    } catch (error) {
-        console.error('데이터 로딩 실패', error)
-    }   
-}
-
-onMounted(() => { searchList(); });
-watch((route), () => searchList());
 
 </script>
 

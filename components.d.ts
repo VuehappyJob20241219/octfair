@@ -9,9 +9,13 @@ declare module 'vue' {
   export interface GlobalComponents {
     AddOn: typeof import('./src/components/layout/AddOn.vue')['default']
     ApprovalMain: typeof import('./src/components/page/Approval/ApprovalMain.vue')['default']
+    ApprovalMainTanstack: typeof import('./src/components/page/Approval/ApprovalMainTanstack.vue')['default']
+    ApprovalSearch: typeof import('./src/components/page/Approval/ApprovalSearch.vue')['default']
     CompanyWrite: typeof import('./src/components/page/Company/CompanyWrite.vue')['default']
     ContextBox: typeof import('./src/components/common/ContextBox.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    HirePostMain: typeof import('./src/components/page/HirePost/HirePostMain.vue')['default']
+    HirePostSearch: typeof import('./src/components/page/HirePost/HirePostSearch.vue')['default']
     ImageNoticeMain: typeof import('./src/components/page/Board/Notice/ImageNoticeMain.vue')['default']
     LeftManuBar: typeof import('./src/components/layout/LeftManuBar.vue')['default']
     LoginMain: typeof import('./src/components/page/Login/LoginMain.vue')['default']

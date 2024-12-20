@@ -5,6 +5,7 @@ import Notice from '../views/Board/Notice.vue';
 import NoticeDetailTanstack from '../components/page/Board/Notice/NoticeDetailTanstack.vue';
 import AddOn from '../components/layout/AddOn.vue';
 import Approval from '../views/Approval/Approval.vue';
+import HirePost from '../views/HirePost/HirePost.vue';
 
 const routes = [
   {
@@ -58,7 +59,12 @@ const routes = [
           path: 'approval.do',
           name: 'approval',
           component: Approval,
-        }
+        },
+        {
+          path: 'post.do',
+          name: 'postList',
+          component: HirePost,
+        },
       ]
         
 
