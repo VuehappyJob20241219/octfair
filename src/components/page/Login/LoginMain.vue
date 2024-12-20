@@ -28,13 +28,16 @@
                         <label> 비밀번호 </label>
                         <input required type="password" v-model="loginInfo.pwd" />
                     </div>
-                    <div class="joinDiv">
-                        <strong class="strong" @click="modalStore.modalState=true">[일반회원가입]</strong>
-                        <strong class="strong">[기업회원가입]</strong>
-                    </div>
                     <div>
                         <button class="login-button" @click="handlerLogin">Login</button>
                     </div>
+                </div>
+                <div class="joinDiv">
+                    <strong class="strong joinDivBtn" >아이디 찾기</strong>
+                    <span class="strong joinDivBtn">|</span>
+                    <strong class="strong joinDivBtn" >비밀번호 찾기</strong>
+                    <span class="strong joinDivBtn">|</span>
+                    <strong class="strong joinDivBtn" @click="modalStore.modalState=true" >회원가입</strong>
                 </div>
             </div>
         </div>
@@ -51,7 +54,7 @@ import { useRouter } from 'vue-router';
 import logo from '../../../assets/logo.png';
 import { nullCheck } from '../../../common/nullCheck';
 import { useUserInfo } from '../../../stores/userInfo';
-// 모달 사용
+// 모달
 import { useModalStore } from '@/stores/modalState';
 import SignUpModal from './SignUpModal.vue';
 // 공통 훅
@@ -61,7 +64,6 @@ import { useEscKey } from '@/common/hook/useEscKey';
 const loginInfo = ref({});
 const userInfo = useUserInfo();
 const router = useRouter();
-// 모달 사용
 const modalStore = useModalStore();
 
 const handlerLogin = async () => {
@@ -110,7 +112,8 @@ useEscKey(() => {modalStore.modatState.value=false});
 }
 
 .buttons {
-    padding: 20px;
+    padding-top: 20px;
+    padding-bottom: 10px;
     justify-content: center;
     align-items: center;
     display: grid;
@@ -160,7 +163,8 @@ button:hover {
     opacity: 0.9;
 }
 .joinDiv {
-    font-size: small;
+    font-size: 20px;
+    padding-bottom: 20px;
 }
 .findDiv {
     font-size: small;
@@ -168,4 +172,15 @@ button:hover {
 .strong {
     cursor: pointer;
 }
+
+.joinDivBtn{
+    color: gray;
+    margin: 0 10px;
+}
+.joinDivBtn:hover{
+    color: black;
+    transition: color 0.3s ease;
+    text-decoration: underline;
+}
+
 </style>
