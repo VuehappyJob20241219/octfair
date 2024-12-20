@@ -43,7 +43,10 @@ import { useNoticeDetailGetQuery } from "../../../../hook/notice/useNoticeDetail
 import { useNoticeDetailSaveMutation } from "../../../../hook/notice/useNoticeDetailSaveMutation";
 import { useNoticeDetailUpdateMutation } from "../../../../hook/notice/useNoticeDetailUpdateMutation";
 import { useNoticeDetailDeleteMutation } from "../../../../hook/notice/useNoticeDetailDeleteMutation";
+<<<<<<< Updated upstream
 import { useModalStore } from "@/stores/modalState";
+=======
+>>>>>>> Stashed changes
 import axios from "axios";
 
 const router = useRouter();
@@ -60,7 +63,11 @@ const {
   isLoading,
   isSuccess,
   isError,
+<<<<<<< Updated upstream
 } = useNoticeDetailGetQuery(detailValue, params.idx, fileData);
+=======
+} = useNoticeDetailGetMutation(detailValue, params.idx, fileData);
+>>>>>>> Stashed changes
 const { mutate: handlerSaveNoticeBtn } = useNoticeDetailSaveMutation(detailValue, params.idx, fileData);
 const { mutate: handlerUpdateNoticeBtn } = useNoticeDetailUpdateMutation(detailValue, params.idx, fileData);
 const { mutate: handlerDeleteNoticeBtn } = useNoticeDetailDeleteMutation(detailValue, params.idx, fileData);
