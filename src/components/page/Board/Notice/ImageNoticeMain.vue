@@ -46,7 +46,7 @@ import { useModalStore } from '@/stores/modalState';
 import { useRouter } from 'vue-router';
 
 const route = useRoute();
-const injectedSearchValue= inject('providedSearchValue');
+const injectedSearchValue = inject('providedSearchValue');
 // const noticeList = ref();
 const itemPerPage = ref(12);
 const cPage = ref(1);
@@ -56,7 +56,7 @@ const queryClient = useQueryClient();
 const router = useRouter();
 
 const searchList = () => {
-    // // 기존방식
+    // 1-1. searchList 기존방식 (URLquery)
     // const param = {
     //     searchTitle: route.query.searchTitle || '',
     //     searchStDate: route.query.searchStDate || '',
@@ -67,28 +67,29 @@ const searchList = () => {
     // axios.post('/api/board/noticeListBody.do', param) // '/api/board/noticeListBodyThumb.do' 로 보내면 썸네일 처리
     //     .then((res) => { noticeList.value = res.data; });
         
-    // Tanstack방식
+    // 1-2. searchList 새방식 (Tanstack)
     queryClient.invalidateQueries({ // 'noticeList'란 key로 NoticeMain에 있는 useQuery를 가동시켜 list 새로고침
         queryKey: ['noticeList']
     })
 };
 
 const handlerGetDetailBtn = (param) => {
-    // 기존방식
+    // 2-1. getDetailBtn 기존방식 (modal)
     modalStore.setModalState();
     noticeIdx.value = param;
 
-    // // Tanstack방식
+    // 2-2. getDetailBtn 새새방식 (page)
     // router.push({ // URLpath를 push해도 되고 router(index.js)에 명시된 name을 push해도 된다.
     //     name: 'noticeDetail',
     //     params: { idx : param },
     // });
 };
 
-// // 기존방식: 조건을 onMounted()와 watch()에서 감지하여 searchList를 실행하는 방식 (+ searchList는 NoticeMain 내장, Detail은 Modal방식)
+// 3-1. refresh 기존방식 (onMount+watch): 조건을 onMounted()와 watch()에서 감지하여 searchList를 실행하는 방식 (+ searchList는 NoticeMain 내장, Detail은 Modal방식)
 // onMounted(() => { searchList(); });
 // watch((route), () => searchList());
-// 아래방식: 조건을 TanStack-useQuery가 감지하여 searchList를 실행하는 방식 (+ searchList는 모듈화하여 외부에, Detail은 별도Page방식)
+
+// 3-2. 새 방식 (Tanstack): 조건을 TanStack-useQuery가 감지하여 searchList를 실행하는 방식 (+ searchList는 모듈화하여 외부에, Detail은 별도Page방식)
 const {
     data: noticeList, // useQuery(useNoticeListSearchQuery) 내 callback함수 return값이 입력된다
     isLoading,

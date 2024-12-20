@@ -4,8 +4,8 @@
         <input v-model.lazy="searchTitle" />
         <input type="date" v-model="searchStartDate"/>
         <input type="date" v-model="searchEndDate"/>
-        <button v-on:click="handlerSearch">검색</button>
-        <button v-on:click="modalStore.setModalState()">신규등록</button>
+        <CommonButton v-on:click="handlerSearch">검색</CommonButton>
+        <CommonButton v-on:click="modalStore.setModalState()">신규등록</CommonButton>
     </div>
 </template>
 

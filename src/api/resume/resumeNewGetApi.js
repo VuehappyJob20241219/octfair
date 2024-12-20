@@ -2,17 +2,15 @@ import axios from 'axios';
 import { Resume } from '../api'
 import { useUserInfo } from '@/stores/userInfo'
 
-export const resumeListGetApi = async (cPage, itemPerPage) => {
+export const resumeNewGetApi = async () => {
     const userInfo = useUserInfo();
 
     const param = {
         loginId: userInfo.user.loginId,
         userNm: userInfo.user.userNm,
         userType: userInfo.user.userType,
-        currentPage: cPage.value,
-        pageSize: itemPerPage.value,
     };
 
-    const result = await axios.post(Resume.GetResumeList, param);
+    const result = await axios.post(Resume.GetResumeNew, param);
     return result.data;
 };

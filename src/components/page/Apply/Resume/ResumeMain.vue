@@ -18,11 +18,14 @@
                 <template v-if="isLoading">...로딩중</template>
                 <template v-if="isSuccess">
                     <template v-if="resumeList?.resume?.length > 0">
-                        <tr v-for="resume in resumeList.resume" :key="resume.resIdx">
+                        <tr v-for="resume in resumeList.resume" 
+                        :key="resume.resIdx" 
+                        @click="handlerGetResumeDetail(resume.resIdx)"
+                        >
                             <td>{{ resume.resTitle }}</td>
                             <td>
-                                <button @click="handlerCopyResumeBtn(resume.resIdx)">복사하기</button>
-                                <!-- <button @cliek="handlerDeleteResumeBtn">삭제하기</button> -->
+                                <CommonButton @click="handlerCopyResumeBtn(resume.resIdx)">복사하기</CommonButton>
+                                <CommonButton @click="handlerDeleteResumeBtn(resume.resIdx)">삭제하기</CommonButton>
                             </td>
                             <td>{{ resume.updatedDate.substr(0, 10) }}</td>
                         </tr>
@@ -38,20 +41,21 @@
         </table>
 
         <!-- 페이지네이션 -->
-        <Pagination 
+        <!-- <Pagination 
             :totalItems="resumeList?.resume?.length || 0"
             :items-per-page="itemPerPage"
             :max-pages-shown="5"
             :onClick="searchList"
             v-model="cPage"
-        />
+        /> -->
     </div>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
 import { useResumeListGetQuery } from '../../../../hook/resume/useResumeListGetQuery';
-import { useResumeAllCopyMutation } from "../../../../hook/resume/useResumeAllCopyMutation";
+import { useResumeDetailCopyMutation } from "../../../../hook/resume/useResumeDetailCopyMutation";
+import { useResumeDetailDeleteMutation } from "../../../../hook/resume/useResumeDetailDeleteMutation";
 import Pagination from '../../../common/Pagination.vue';
 
 const router = useRouter();
@@ -79,7 +83,8 @@ const {
     isStale, // 캐시유지 주기
     refetch, // 자동갱신 주기
 } = useResumeListGetQuery(cPage, itemPerPage);
-const { mutate: handlerCopyResumeBtn, } = useResumeAllCopyMutation();
+const { mutate: handlerCopyResumeBtn, } = useResumeDetailCopyMutation();
+const { mutate: handlerDeleteResumeBtn, } = useResumeDetailDeleteMutation();
 </script>
 
 <style lang="scss" scoped>

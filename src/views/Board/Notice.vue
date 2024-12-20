@@ -11,6 +11,8 @@
 
 <script setup>
 const providedSearchValue = ref({});
-
 provide('providedSearchValue', providedSearchValue);
 </script>
+
+<style lang="scss" scoped>
+</style>

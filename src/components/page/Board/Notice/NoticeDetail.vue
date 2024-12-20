@@ -16,9 +16,9 @@
                     </div>
                 </div>
                 <div class="button-box">
-                    <button v-on:click="noticeDetail.noticeIdx ? handlerUpdateBtn() : handlerSaveBtn()">{{noticeDetail.noticeIdx ? '수정' : '저장'}}</button>
-                    <button v-on:click="handlerDeleteBtn" v-if="props.idx">삭제</button>
-                    <button v-on:click="modalStore.setModalState()">나가기</button>
+                    <CommonButton v-on:click="noticeDetail.noticeIdx ? handlerUpdateBtn() : handlerSaveBtn()">{{noticeDetail.noticeIdx ? '수정' : '저장'}}</CommonButton>
+                    <CommonButton v-on:click="handlerDeleteBtn" v-if="props.idx">삭제</CommonButton>
+                    <CommonButton v-on:click="modalStore.setModalState()">뒤로가기</CommonButton>
                 </div>
             </div>
         </div>
@@ -63,7 +63,8 @@ const handlerGetModalDetail = () => {
 
 const handlerSaveBtn = () => {
     const textData = {
-        ...noticeDetail.value, // title, context
+        ...noticeDetail.value, // title
+        context: noticeDetail.value.context,
         loginId: userInfo.user.loginId,
     };
     const formData = new FormData();
@@ -82,7 +83,8 @@ const handlerSaveBtn = () => {
 
 const handlerUpdateBtn = () => {
     const textData = {
-        ...noticeDetail.value, // title, context
+        ...noticeDetail.value, // title
+        content: noticeDetail.value.context,
         loginId: userInfo.user.loginId,
         noticeSeq: noticeDetail.value.noticeIdx,
     };

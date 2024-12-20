@@ -8,6 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddOn: typeof import('./src/components/layout/AddOn.vue')['default']
+    Button: typeof import('./src/components/common/Button.vue')['default']
+    CommonButton: typeof import('./src/components/common/CommonButton.vue')['default']
     ContextBox: typeof import('./src/components/common/ContextBox.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     ImageNoticeMain: typeof import('./src/components/page/Board/Notice/ImageNoticeMain.vue')['default']
@@ -22,7 +24,10 @@ declare module 'vue' {
     NoticeSearch: typeof import('./src/components/page/Board/Notice/NoticeSearch.vue')['default']
     NoticeSearchTanstack: typeof import('./src/components/page/Board/Notice/NoticeSearchTanstack.vue')['default']
     Pagination: typeof import('./src/components/common/Pagination.vue')['default']
+    ResumeDetail: typeof import('./src/components/page/Apply/Resume/ResumeDetail.vue')['default']
     ResumeMain: typeof import('./src/components/page/Apply/Resume/ResumeMain.vue')['default']
+    ResumeNew: typeof import('./src/components/page/Apply/Resume/ResumeNew.vue')['default']
+    ResumeNewButton: typeof import('./src/components/page/Apply/Resume/ResumeNewButton.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SnowSkin: typeof import('./src/components/layout/AddOnPack/SnowSkin.vue')['default']

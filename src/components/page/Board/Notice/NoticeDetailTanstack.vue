@@ -2,7 +2,7 @@
     <div>
         <div v-if="isLoading">...로딩중</div>
         <div v-else>
-            <ContextBox>공지사항 상세조회</ContextBox>
+            <ContextBox>공지사항 상세정보</ContextBox>
             <label> 제목 :<input type="text" v-model="detailValue.title"/> </label>
             <label> 내용 :<input type="text" v-model="detailValue.content"/> </label> 
             <label> 파일 :<input type="file" id="fileInput" style="display: none" @change="handlerSelectFileBtn" /> </label> 
@@ -17,9 +17,9 @@
                 </div>
             </div>
             <div class="button-box">
-                <button @click="detailValue.noticeIdx ? handlerUpdateNoticeBtn() : handlerSaveNoticeBtn()">{{detailValue.noticeIdx ? '수정' : '저장'}}</button>
-                <button @click="handlerDeleteNoticeBtn" v-if="detailValue.noticeIdx">삭제</button>
-                <button @click="router.go(-1); modalStore.modalstate.value(false);">뒤로가기</button>
+                <CommonButton @click="detailValue.noticeIdx ? handlerUpdateNoticeBtn() : handlerSaveNoticeBtn()">{{detailValue.noticeIdx ? '수정' : '저장'}}</CommonButton>
+                <CommonButton @click="handlerDeleteNoticeBtn" v-if="detailValue.noticeIdx">삭제</CommonButton>
+                <CommonButton @click="router.go(-1); modalStore.modalstate.value(false);">뒤로가기</CommonButton>
             </div>
         </div>
         <div v-if="isError">...에러</div>

@@ -4,7 +4,7 @@ import { Notice } from '../api'
 export const noticeDetailUpdateApi = async (detailValue, idx, fileData) => {
     const textData = {
         ...detailValue.value, // title
-        context: detailValue.value.content, // 변수명 오타 차이
+        content: detailValue.value.content, // 변수명 오타 차이
         noticeSeq: idx,
     };
 

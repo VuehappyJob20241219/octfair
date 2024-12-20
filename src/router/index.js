@@ -5,6 +5,8 @@ import Notice from '../views/Board/Notice.vue';
 import NoticeDetailTanstack from '../components/page/Board/Notice/NoticeDetailTanstack.vue';
 import AddOn from '../components/layout/AddOn.vue';
 import Resume from '../views/Apply/Resume.vue'
+import ResumeNew from '../components/page/Apply/Resume/ResumeNew.vue'
+import ResumeDetail from '../components/page/Apply/Resume/ResumeDetail.vue'
 
 const routes = [
   {
@@ -30,6 +32,16 @@ const routes = [
             path: 'resume.do',
             name: 'resume',
             component: Resume,
+          },
+          {
+            path: 'resume-new.do',
+            name: 'resume-new',
+            component: ResumeNew,
+          },
+          {
+            path: 'resume-detail.do',
+            name: 'resume-detail',
+            component: ResumeDetail,
           }
         ],
       },
